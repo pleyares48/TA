@@ -10,11 +10,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: sudo apt update && sudo apt install -y python3-pip python3-setuptools python3-wheel git zip unzip openjdk-17-jdk
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            python3-pip python3-setuptools python3-wheel \
+            git zip unzip openjdk-17-jdk \
+            pkg-config libgl1-mesa-dev libgles2-mesa-dev \
+            libffi-dev libssl-dev libsqlite3-dev zlib1g-dev
 
-      - name: Install buildozer
-        run: pip install buildozer cython==0.29.36
+      - name: Install buildozer and Cython
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython==0.29.36
 
       - name: Build APK
         run: buildozer -v android debug
